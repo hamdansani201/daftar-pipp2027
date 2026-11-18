@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pendaftaran PIPP 2026</title>
+<style>
+  :root{
+    --hijau:#0b6b4f; --hijau-gelap:#08503c; --emas:#e0a526; --latar:#f3f7f5;
+    --teks:#1d2b26; --kelabu:#6b7a74; --garis:#d5dfda; --ralat:#c0392b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--latar);color:var(--teks);line-height:1.5}
+  header{background:linear-gradient(135deg,var(--hijau),var(--hijau-gelap));color:#fff;padding:32px 16px 40px;text-align:center}
+  header .kecil{letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;opacity:.85}
+  header h1{margin:8px 0 6px;font-size:clamp(1.2rem,4vw,1.9rem);line-height:1.3}
+  header .tag{display:inline-block;background:var(--emas);color:#2b2000;font-weight:700;padding:6px 16px;border-radius:999px;margin-top:8px}
+  main{max-width:760px;margin:-24px auto 40px;padding:0 16px}
+  .kad{background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.07);padding:22px;margin-bottom:18px}
+  .kad h2{margin:0 0 4px;font-size:1.1rem;color:var(--hijau)}
+  .kad .nota{margin:0 0 16px;color:var(--kelabu);font-size:.9rem}
+  .medan{margin-bottom:16px}
+  label{display:block;font-weight:600;font-size:.93rem;margin-bottom:5px}
+  label .wajib{color:var(--ralat)}
+  .bantuan{font-size:.82rem;color:var(--kelabu);margin-top:3px}
+  input[type=text],input[type=tel],input[type=email],input[type=url],select,textarea{
+    width:100%;padding:11px 12px;border:1.5px solid var(--garis);border-radius:9px;font:inherit;background:#fff;color:inherit}
+  textarea{min-height:100px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--hijau);box-shadow:0 0 0 3px rgba(11,107,79,.15)}
+  .ralat input[type=text],.ralat input[type=tel],.ralat input[type=email],.ralat input[type=url],.ralat select,.ralat textarea{border-color:var(--ralat)}
+  .ralat .kotak-fail{border-color:var(--ralat)}
+  .mesej-ralat{color:var(--ralat);font-size:.82rem;margin-top:4px;display:none}
+  .ralat .mesej-ralat{display:block}
+  .baris{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:600px){.baris{grid-template-columns:1fr}}
+  .pilihan{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-weight:400;cursor:pointer}
+  .pilihan input{margin-top:4px;width:auto}
+  .pilihan-kad{border:1.5px solid var(--garis);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-weight:600;align-items:center}
+  .pilihan-kad:has(input:checked){border-color:var(--hijau);background:#eaf5f0}
+  .info-kotak{background:#fff8e6;border:1.5px dashed var(--emas);border-radius:10px;padding:14px 16px;font-size:.9rem;margin-bottom:16px}
+  .info-kotak strong.tajuk{display:block;margin-bottom:6px}
+  .info-kotak ul{margin:6px 0 0;padding-left:20px}
+  .info-kotak li{margin-bottom:3px}
+  .kotak-fail{border:1.5px dashed var(--hijau);border-radius:10px;padding:14px;background:#f7fbf9}
+  .kotak-fail input[type=file]{width:100%;font:inherit}
+  .atau{text-align:center;color:var(--kelabu);font-weight:700;margin:2px 0 16px;font-size:.85rem;letter-spacing:.1em}
+  .nama-fail{margin-top:8px;font-size:.88rem;color:var(--hijau);font-weight:600;word-break:break-all}
+  .bar-luar{display:none;height:12px;background:#e3ece8;border-radius:999px;overflow:hidden;margin-top:12px}
+  .bar-dalam{height:100%;width:0;background:linear-gradient(90deg,var(--hijau),var(--emas));transition:width .2s}
+  .teks-kemajuan{display:none;font-size:.85rem;color:var(--hijau);font-weight:600;margin-top:6px;text-align:center}
+  button{width:100%;padding:14px;border:0;border-radius:10px;background:var(--hijau);color:#fff;font:inherit;font-weight:700;font-size:1.05rem;cursor:pointer}
+  button:hover{background:var(--hijau-gelap)}
+  button:disabled{opacity:.6;cursor:not-allowed}
+  .hp{position:absolute;left:-9999px}
+  .berjaya{text-align:center;display:none}
+  .berjaya .tanda{font-size:3rem}
+  .berjaya .rujukan{font-size:1.4rem;font-weight:800;color:var(--hijau);letter-spacing:.04em;background:var(--latar);display:inline-block;padding:8px 18px;border-radius:10px;margin:8px 0}
+  .tutup{background:#fdecea;border:1px solid var(--ralat);color:var(--ralat);padding:14px;border-radius:10px;text-align:center;font-weight:600;display:none;margin-bottom:18px}
+  .ralat-hantar{color:var(--ralat);text-align:center;margin-top:10px;display:none;font-weight:600}
+  .amaran{font-size:.85rem;color:#7a5a00;background:#fff3cd;border-radius:8px;padding:8px 12px;margin-top:10px;display:none}
+  footer{text-align:center;color:var(--kelabu);font-size:.82rem;padding-bottom:30px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kecil">Borang Pendaftaran</div>
+  <h1>Pertandingan Inovasi Pengajaran Guru PASTI (PIPP) 2026</h1>
+  <div class="tag">14 PASTI Negeri (28 Penyertaan)</div>
+</header>
+
+<main>
+  <div class="tutup" id="tutup">Pendaftaran telah ditutup. Terima kasih atas minat anda.</div>
+
+  <form id="borang" novalidate autocomplete="on">
+    <!-- Honeypot anti-spam -->
+    <input type="text" name="laman_web" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <section class="kad">
+      <h2>Penerangan Borang</h2>
+      <p class="nota" style="margin:0;color:var(--teks)">
+        Borang ini disediakan bagi tujuan pendaftaran peserta Pertandingan Inovasi Pengajaran Guru PASTI (PIPP) 2026.
+        Setiap PASTI Negeri dikehendaki menghantar <strong>dua (2) penyertaan</strong>, iaitu satu (1) penyertaan
+        bagi kategori <strong>Fizikal</strong> dan satu (1) penyertaan bagi kategori <strong>Digital</strong>.
+      </p>
+    </section>
+
+    <!-- BAHAGIAN A -->
+    <section class="kad">
+      <h2>Bahagian A: Maklumat PASTI Negeri</h2>
+      <p class="nota">&nbsp;</p>
+
+      <div class="medan">
+        <label for="negeri">1. Nama PASTI Negeri <span class="wajib">*</span></label>
+        <select id="negeri" name="negeri" required>
+          <option value="">-- Pilih PASTI Negeri --</option>
+          <option>Johor</option><option>Kedah</option><option>Kelantan</option>
+          <option>Melaka</option><option>Negeri Sembilan</option><option>Pahang</option>
+          <option>Perak</option><option>Perlis</option><option>Pulau Pinang</option>
+          <option>Sabah</option><option>Sarawak</option><option>Selangor</option>
+          <option>Terengganu</option><option>Wilayah Persekutuan</option>
+        </select>
+        <div class="mesej-ralat">Sila pilih PASTI Negeri.</div>
+      </div>
+
+      <div class="medan">
+        <label for="pasti">2. Nama PASTI / Institusi <span class="wajib">*</span></label>
+        <input type="text" id="pasti" name="pasti" required>
+        <div class="mesej-ralat">Sila isi nama PASTI / institusi.</div>
+      </div>
+
+      <div class="medan">
+        <label for="penyelaras">3. Nama Penyelaras PIPP Negeri <span class="wajib">*</span></label>
+        <input type="text" id="penyelaras" name="penyelaras" required>
+        <div class="mesej-ralat">Sila isi nama penyelaras.</div>
+      </div>
+
+      <div class="baris">
+        <div class="medan">
+          <label for="telPenyelaras">4. Nombor Telefon Penyelaras <span class="wajib">*</span></label>
+          <input type="tel" id="telPenyelaras" name="telPenyelaras" placeholder="0123456789" required>
+          <div class="mesej-ralat">Masukkan nombor telefon yang sah.</div>
+        </div>
+        <div class="medan">
+          <label for="emelPenyelaras">5. Alamat E-mel Penyelaras</label>
+          <input type="email" id="emelPenyelaras" name="emelPenyelaras">
+          <div class="mesej-ralat">Masukkan alamat e-mel yang sah.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAHAGIAN B -->
+    <section class="kad">
+      <h2>Bahagian B: Maklumat Peserta</h2>
+      <p class="nota">&nbsp;</p>
+
+      <div class="medan">
+        <label for="nama">6. Nama Penuh Guru <span class="wajib">*</span></label>
+        <input type="text" id="nama" name="nama" required>
+        <div class="mesej-ralat">Sila isi nama penuh guru.</div>
+      </div>
+
+      <div class="medan">
+        <label for="jawatan">7. Jawatan di PASTI <span class="wajib">*</span></label>
+        <input type="text" id="jawatan" name="jawatan" placeholder="Contoh: Guru PASTI / Penyelia PASTI" required>
+        <div class="mesej-ralat">Sila isi jawatan di PASTI.</div>
+      </div>
+
+      <div class="baris">
+        <div class="medan">
+          <label for="telefon">8. Nombor Telefon Bimbit <span class="wajib">*</span></label>
+          <input type="tel" id="telefon" name="telefon" placeholder="0123456789" required>
+          <div class="mesej-ralat">Masukkan nombor telefon bimbit yang sah.</div>
+        </div>
+        <div class="medan">
+          <label for="emel">9. Alamat E-mel <span class="wajib">*</span></label>
+          <input type="email" id="emel" name="emel" required>
+          <div class="mesej-ralat">Masukkan alamat e-mel yang sah.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAHAGIAN C -->
+    <section class="kad">
+      <h2>Bahagian C: Maklumat Penyertaan</h2>
+      <p class="nota">&nbsp;</p>
+
+      <div class="medan" id="kategori-wrap">
+        <label>10. Kategori Pertandingan <span class="wajib">*</span></label>
+        <label class="pilihan pilihan-kad"><input type="radio" name="kategori" value="BBM Fizikal"> <span>BBM Fizikal</span></label>
+        <label class="pilihan pilihan-kad"><input type="radio" name="kategori" value="BBM Digital"> <span>BBM Digital</span></label>
+        <div class="mesej-ralat">Sila pilih kategori pertandingan.</div>
+      </div>
+
+      <div class="medan">
+        <label for="tajuk">11. Tajuk Inovasi/BBM <span class="wajib">*</span></label>
+        <input type="text" id="tajuk" name="tajuk" required>
+        <div class="mesej-ralat">Sila isi tajuk inovasi/BBM.</div>
+      </div>
+
+      <div class="medan">
+        <label for="bidang">12. Bidang / Tunjang Pembelajaran <span class="wajib">*</span></label>
+        <input type="text" id="bidang" name="bidang" list="senarai-bidang" placeholder="Pilih cadangan atau taip sendiri" required>
+        <datalist id="senarai-bidang">
+          <option value="Al-Quran">
+          <option value="Asas Fardhu Ain">
+          <option value="Jawi dan Khat">
+          <option value="Bahasa Arab">
+          <option value="Hafazan dan Doa">
+          <option value="Akhlak dan Adab">
+          <option value="Bahasa Melayu / Literasi">
+          <option value="Numerasi">
+          <option value="Sains dan Alam Sekitar">
+          <option value="Kreativiti dan Seni">
+        </datalist>
+        <div class="mesej-ralat">Sila isi bidang / tunjang pembelajaran.</div>
+      </div>
+
+      <div class="medan">
+        <label for="sinopsis">13. Sinopsis Ringkas Inovasi/BBM <span class="wajib">*</span></label>
+        <textarea id="sinopsis" name="sinopsis" required></textarea>
+        <div class="mesej-ralat">Sila isi sinopsis ringkas.</div>
+      </div>
+
+      <div class="medan">
+        <label for="objektif">14. Objektif Penghasilan Inovasi/BBM <span class="wajib">*</span></label>
+        <textarea id="objektif" name="objektif" required></textarea>
+        <div class="mesej-ralat">Sila isi objektif penghasilan.</div>
+      </div>
+    </section>
+
+    <!-- BAHAGIAN D -->
+    <section class="kad">
+      <h2>Bahagian D: Penghantaran Video Ringkas Produk Inovasi</h2>
+      <p class="nota">&nbsp;</p>
+
+      <div class="info-kotak">
+        <strong class="tajuk">Arahan kepada peserta</strong>
+        Setiap peserta dikehendaki menghantar satu (1) video ringkas yang memperkenalkan dan menunjukkan
+        demonstrasi produk inovasi yang dipertandingkan.
+        <strong class="tajuk" style="margin-top:10px">Ketetapan penghantaran video</strong>
+        <ul>
+          <li><strong>Tempoh video:</strong> Maksimum 1 minit.</li>
+          <li><strong>Kandungan:</strong> Pengenalan produk, fungsi dan demonstrasi ringkas inovasi.</li>
+          <li><strong>Tarikh akhir penghantaran:</strong> 8 Januari 2027.</li>
+          <li><strong>Kaedah penghantaran:</strong> Muat naik video terus di bawah, <em>atau</em> masukkan pautan Google Drive.
+              <strong>Sekurang-kurangnya satu kaedah wajib diisi.</strong></li>
+          <li><strong>Muat naik terus:</strong> format video (MP4, MOV, WebM dan lain-lain), saiz maksimum 100 MB.</li>
+        </ul>
+      </div>
+
+      <div class="medan" id="fail-wrap">
+        <label for="videoFail">1. Muat naik video <span class="wajib">*</span></label>
+        <div class="kotak-fail">
+          <input type="file" id="videoFail" accept="video/*,.mp4,.mov,.m4v,.webm,.3gp,.avi,.mkv">
+          <div class="nama-fail" id="nama-fail"></div>
+          <div class="bar-luar" id="bar-luar"><div class="bar-dalam" id="bar-dalam"></div></div>
+          <div class="teks-kemajuan" id="teks-kemajuan"></div>
+        </div>
+        <div class="mesej-ralat" id="msg-fail"></div>
+      </div>
+
+      <div class="atau">&mdash; ATAU &mdash;</div>
+
+      <div class="medan" id="pautan-wrap">
+        <label for="video">2. Pautan video produk inovasi (Google Drive) <span class="wajib">*</span></label>
+        <input type="url" id="video" name="video" placeholder="https://drive.google.com/...">
+        <div class="bantuan">Tetapkan akses pautan kepada "Sesiapa yang mempunyai pautan boleh melihat".</div>
+        <div class="mesej-ralat" id="msg-pautan"></div>
+      </div>
+
+      <div class="bantuan" style="margin-top:-4px">* Isi sekurang-kurangnya satu: muat naik video <strong>atau</strong> pautan video.</div>
+    </section>
+
+    <!-- BAHAGIAN E -->
+    <section class="kad">
+      <h2>Bahagian E: Pengesahan</h2>
+      <p class="nota">&nbsp;</p>
+      <div class="medan" id="pengakuan-wrap">
+        <label class="pilihan">
+          <input type="checkbox" id="pengakuan">
+          <span>15. Pengakuan peserta <span class="wajib">*</span><br>
+          Saya mengesahkan bahawa maklumat yang diberikan adalah benar dan penyertaan ini merupakan hasil inovasi pengajaran yang dikemukakan untuk Pertandingan PIPP 2026.</span>
+        </label>
+        <div class="mesej-ralat">Sila tandakan pengakuan peserta.</div>
+      </div>
+      <button type="submit" id="hantar">Hantar Pendaftaran</button>
+      <div class="ralat-hantar" id="ralat-hantar"></div>
+    </section>
+  </form>
+
+  <section class="kad berjaya" id="berjaya">
+    <div class="tanda">🎉</div>
+    <h2>Pendaftaran Berjaya Dihantar!</h2>
+    <p>Terima kasih. Sila simpan nombor rujukan anda:</p>
+    <div class="rujukan" id="no-rujukan"></div>
+    <p id="nota-video"></p>
+    <div class="amaran" id="amaran"></div>
+  </section>
+</main>
+
+<footer>&copy; 2026 Pertandingan Inovasi Pengajaran Guru PASTI (PIPP)</footer>
+
+<script>
+/* ================= TETAPAN ================= */
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGb-Bo-vzyEIe_kwGNQGZF9kihgQepe06bCLQOUV5uODA0jU-fuoTRuGMTV-BN9m8SGQ/exec';
+
+// Tarikh tutup borang pendaftaran (format ISO). Kosongkan '' jika belum ditetapkan.
+const TARIKH_TUTUP = ''; // contoh: '2026-12-31T23:59:00+08:00'
+
+const HAD_SAIZ_MB = 100;                 // mesti sama dengan Code.gs
+const SAIZ_CHUNK  = 3 * 1024 * 1024;     // 3 MB (gandaan 256 KB, diperlukan oleh Google Drive)
+/* ============================================ */
+
+const borang = document.getElementById('borang');
+const btn = document.getElementById('hantar');
+const inputFail = document.getElementById('videoFail');
+const v = id => document.getElementById(id).value.trim();
+const radio = nama => (document.querySelector('input[name="' + nama + '"]:checked') || {}).value || '';
+
+if (TARIKH_TUTUP && new Date() > new Date(TARIKH_TUTUP)) {
+  borang.style.display = 'none';
+  document.getElementById('tutup').style.display = 'block';
+}
+
+// Nombor rujukan dijana sekali setiap kali halaman dibuka,
+// supaya penghantaran semula tidak menghasilkan rekod berganda.
+const RUJUKAN = (() => {
+  const t = new Date(), p = n => String(n).padStart(2, '0');
+  return 'PIPP26-' + t.getFullYear() + p(t.getMonth() + 1) + p(t.getDate()) + '-' +
+         Math.random().toString(36).slice(2, 6).toUpperCase();
+})();
+
+let hasilMuatNaik = null; // cache supaya video tidak dimuat naik berulang kali jika penghantaran gagal
+
+function tandaRalat(el, salah) {
+  const medan = el.closest('.medan');
+  if (medan) medan.classList.toggle('ralat', salah);
+  return !salah;
+}
+
+const telSah = t => /^\+?\d{9,13}$/.test(t.replace(/[\s-]/g, ''));
+const emelSah = t => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t);
+const saizMB = b => (b / 1024 / 1024).toFixed(1) + ' MB';
+
+function semakFail(f) {
+  const adaVideo = (f.type && f.type.indexOf('video/') === 0) ||
+                   /\.(mp4|mov|m4v|webm|3gp|avi|mkv)$/i.test(f.name);
+  if (!adaVideo) return 'Fail yang dipilih bukan video. Sila pilih fail video (MP4, MOV, WebM dan lain-lain).';
+  if (f.size === 0) return 'Fail video kosong.';
+  if (f.size > HAD_SAIZ_MB * 1024 * 1024) {
+    return 'Saiz video (' + saizMB(f.size) + ') melebihi had ' + HAD_SAIZ_MB + ' MB. Sila mampatkan video atau guna pautan Google Drive.';
+  }
+  return '';
+}
+
+inputFail.addEventListener('change', () => {
+  const f = inputFail.files[0];
+  const nama = document.getElementById('nama-fail');
+  nama.textContent = f ? f.name + ' (' + saizMB(f.size) + ')' : '';
+  hasilMuatNaik = null;
+});
+
+function sahkan() {
+  let sah = true;
+
+  ['negeri','pasti','penyelaras','nama','jawatan','tajuk','bidang','sinopsis','objektif'].forEach(id => {
+    const el = document.getElementById(id);
+    sah = tandaRalat(el, !el.value.trim()) && sah;
+  });
+
+  sah = tandaRalat(document.getElementById('telPenyelaras'), !telSah(v('telPenyelaras'))) && sah;
+  sah = tandaRalat(document.getElementById('telefon'), !telSah(v('telefon'))) && sah;
+  sah = tandaRalat(document.getElementById('emel'), !emelSah(v('emel'))) && sah;
+
+  const ep = v('emelPenyelaras');
+  sah = tandaRalat(document.getElementById('emelPenyelaras'), ep !== '' && !emelSah(ep)) && sah;
+
+  sah = tandaRalat(document.getElementById('kategori-wrap'), !radio('kategori')) && sah;
+
+  // ---- Video: sekurang-kurangnya satu (muat naik ATAU pautan) ----
+  const fail = inputFail.files[0];
+  const pautan = v('video');
+  const tiada = !fail && !pautan;
+  const ralatFail = fail ? semakFail(fail) : '';
+  const pautanSalah = pautan !== '' && !/^https:\/\/\S+\.\S+/.test(pautan);
+
+  document.getElementById('msg-fail').textContent =
+    tiada ? 'Sila muat naik video ATAU masukkan pautan video (sekurang-kurangnya satu).' : ralatFail;
+  document.getElementById('msg-pautan').textContent =
+    tiada ? 'Sila muat naik video ATAU masukkan pautan video (sekurang-kurangnya satu).'
+          : 'Masukkan pautan video yang sah (bermula dengan https://).';
+  sah = tandaRalat(document.getElementById('videoFail'), tiada || ralatFail !== '') && sah;
+  sah = tandaRalat(document.getElementById('video'), tiada || pautanSalah) && sah;
+
+  sah = tandaRalat(document.getElementById('pengakuan'), !document.getElementById('pengakuan').checked) && sah;
+
+  if (!sah) {
+    const pertama = document.querySelector('.ralat');
+    if (pertama) pertama.scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
+  return sah;
+}
+
+borang.addEventListener('input', e => { const m = e.target.closest('.medan'); if (m) m.classList.remove('ralat'); });
+borang.addEventListener('change', e => { const m = e.target.closest('.medan'); if (m) m.classList.remove('ralat'); });
+
+/* ---------- Komunikasi dengan Apps Script ---------- */
+async function pos(data) {
+  const res = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+
+const tunggu = ms => new Promise(r => setTimeout(r, ms));
+
+function blobKeBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result).split(',')[1]);
+    fr.onerror = () => reject(new Error('Gagal membaca fail video.'));
+    fr.readAsDataURL(blob);
+  });
+}
+
+function kemajuan(peratus, teks) {
+  document.getElementById('bar-luar').style.display = 'block';
+  const t = document.getElementById('teks-kemajuan');
+  t.style.display = 'block';
+  t.textContent = teks;
+  document.getElementById('bar-dalam').style.width = peratus + '%';
+  btn.textContent = 'Memuat naik video... ' + Math.round(peratus) + '%';
+}
+
+async function muatNaikVideo(file) {
+  const kunciFail = [file.name, file.size, file.lastModified, v('negeri'), radio('kategori')].join('|');
+  if (hasilMuatNaik && hasilMuatNaik.kunci === kunciFail) return hasilMuatNaik.fileId;
+
+  const jenis = file.type || 'video/mp4';
+  kemajuan(0, 'Menyediakan muat naik...');
+
+  const mula = await pos({
+    action: 'mulaiMuatNaik', rujukan: RUJUKAN, negeri: v('negeri'), kategori: radio('kategori'),
+    namaFail: file.name, jenis, saiz: file.size
+  });
+  if (mula.status !== 'ok') throw new Error(mula.mesej || 'Gagal memulakan muat naik.');
+
+  let offset = 0, fileId = '';
+  while (offset < file.size) {
+    const hujung = Math.min(offset + SAIZ_CHUNK, file.size);
+    const b64 = await blobKeBase64(file.slice(offset, hujung));
+
+    let r, cuba = 0;
+    while (true) {
+      try {
+        r = await pos({action: 'chunk', sessionUrl: mula.sessionUrl, data: b64,
+                       mula: offset, jumlah: file.size, jenis});
+        if (r.status !== 'ok') throw new Error(r.mesej || 'Ralat muat naik.');
+        break;
+      } catch (err) {
+        if (++cuba >= 3) throw err;
+        await tunggu(1500 * cuba);
+      }
+    }
+    offset = hujung;
+    if (r.siap) fileId = r.fileId;
+    kemajuan(offset / file.size * 100, 'Dimuat naik ' + saizMB(offset) + ' / ' + saizMB(file.size));
+  }
+  if (!fileId) throw new Error('Muat naik tidak lengkap. Sila cuba lagi.');
+
+  hasilMuatNaik = {kunci: kunciFail, fileId};
+  return fileId;
+}
+
+/* ---------- Paparan hasil ---------- */
+function paparBerjaya(tidakPasti) {
+  borang.style.display = 'none';
+  document.getElementById('no-rujukan').textContent = RUJUKAN;
+  document.getElementById('nota-video').textContent =
+    'Video anda telah direkodkan. Tarikh akhir penghantaran video: 8 Januari 2027.';
+  if (tidakPasti) {
+    const a = document.getElementById('amaran');
+    a.textContent = 'Pengesahan automatik daripada pelayan tidak dapat diterima. Sila simpan nombor rujukan ini dan sahkan dengan urus setia jika anda tidak dihubungi.';
+    a.style.display = 'block';
+  }
+  document.getElementById('berjaya').style.display = 'block';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function paparRalat(teks) {
+  const r = document.getElementById('ralat-hantar');
+  r.textContent = teks;
+  r.style.display = 'block';
+  btn.disabled = false;
+  btn.textContent = 'Hantar Pendaftaran';
+}
+
+/* ---------- Hantar borang ---------- */
+borang.addEventListener('submit', async e => {
+  e.preventDefault();
+  document.getElementById('ralat-hantar').style.display = 'none';
+
+  if (borang.laman_web.value) return; // honeypot
+  if (!sahkan()) return;
+
+  if (SCRIPT_URL.indexOf('TAMPAL') === 0) {
+    alert('SCRIPT_URL belum ditetapkan. Sila tampal URL Web App Google Apps Script dalam index.html.');
+    return;
+  }
+
+  btn.disabled = true;
+
+  // 1) Muat naik video (jika ada fail)
+  let videoFailId = '';
+  const fail = inputFail.files[0];
+  if (fail) {
+    try {
+      videoFailId = await muatNaikVideo(fail);
+    } catch (err) {
+      paparRalat('Muat naik video gagal: ' + (err.message || 'sila semak sambungan internet dan cuba lagi.') +
+                 ' Anda boleh cuba semula, atau guna pautan Google Drive.');
+      return;
+    }
+  }
+
+  btn.textContent = 'Sedang menghantar...';
+
+  // 2) Hantar maklumat pendaftaran
+  const data = {
+    rujukan: RUJUKAN,
+    negeri: v('negeri'), pasti: v('pasti'),
+    penyelaras: v('penyelaras'), telPenyelaras: v('telPenyelaras'), emelPenyelaras: v('emelPenyelaras'),
+    nama: v('nama'), jawatan: v('jawatan'), telefon: v('telefon'), emel: v('emel'),
+    kategori: radio('kategori'), tajuk: v('tajuk'), bidang: v('bidang'),
+    sinopsis: v('sinopsis'), objektif: v('objektif'),
+    video: v('video'), videoFailId: videoFailId,
+    pengakuan: 'Ya'
+  };
+  const badan = JSON.stringify(data);
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: badan
+    });
+    const j = await res.json();
+    if (j.status === 'ok') paparBerjaya(false);
+    else paparRalat(j.mesej || 'Penghantaran gagal. Sila cuba lagi.');
+  } catch (err) {
+    // Jawapan pelayan tidak dapat dibaca. Hantar sekali lagi tanpa membaca jawapan;
+    // nombor rujukan yang sama memastikan tiada rekod berganda.
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: {'Content-Type': 'text/plain;charset=utf-8'},
+        body: badan
+      });
+      paparBerjaya(true);
+    } catch (err2) {
+      paparRalat('Penghantaran gagal. Sila semak sambungan internet dan cuba lagi.');
+    }
+  }
+});
+</script>
+</body>
+</html>
